@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invisible Factory • Build Assets That Sell Themselves</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050508;
+            --surface: #0a0a0f;
+            --card: rgba(22, 22, 31, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
+            --gold: #f5c842;
+            --gold-dim: #c8920a;
+            --red-glass: rgba(255, 40, 40, 0.08);
+            --red-border: rgba(255, 68, 68, 0.3);
+            --emerald: #10b981;
+            --text: #ededf5;
+            --muted: #5a5a7a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Grain Effect Overlay */
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 9999; opacity: 0.4;
+        }
+
+        /* TINTED RED GLASS SECTION */
+        .red-glass {
+            background: var(--red-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--red-border);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(5,5,8,0.85); border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 1000; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-box { background: var(--emerald); width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900; }
+        .nav-links { display: flex; gap: 2rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: var(--muted); }
+        .nav-links a:hover { color: var(--emerald); }
+
+        /* HERO */
+        .hero { padding: 12rem 2rem 8rem; text-align: center; position: relative; }
+        .hero-badge { display: inline-block; background: rgba(16, 185, 129, 0.05); color: var(--emerald); font-family: 'JetBrains Mono'; font-size: 0.7rem; padding: 6px 16px; border-radius: 30px; border: 1px solid rgba(16, 185, 129, 0.2); margin-bottom: 2rem; letter-spacing: 2px; }
+        h1 { font-family: 'Bebas Neue'; font-size: clamp(4rem, 15vw, 9rem); line-height: 0.8; margin-bottom: 2rem; letter-spacing: -2px; }
+        .hero p { font-size: 1.4rem; color: var(--muted); max-width: 600px; margin: 0 auto 3.5rem; }
+
+        /* SIMI HOVER BUTTONS */
+        .btn-simi {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: #fff; color: #000;
+            padding: 1.2rem 2.8rem; border-radius: 12px;
+            text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 1rem;
+            box-shadow: 0 5px 0px #bbb;
+        }
+        .btn-simi:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3); background: var(--emerald); color: #000; }
+        .btn-simi:active { transform: translateY(0px); box-shadow: 0 0px 0px transparent; }
+        
+        .btn-simi.outline { background: transparent; color: #fff; border: 1px solid var(--border); box-shadow: none; }
+        .btn-simi.outline:hover { border-color: var(--emerald); color: var(--emerald); background: rgba(16, 185, 129, 0.05); }
+
+        /* SECTIONS */
+        .container { max-width: 1200px; margin: 0 auto; padding: 6rem 24px; }
+        .section-title { font-family: 'Bebas Neue'; font-size: clamp(3rem, 10vw, 6rem); line-height: 0.9; margin-bottom: 3rem; }
+
+        /* PROBLEM GRID */
+        .problem-grid { display: grid; gap: 1.5rem; margin-top: 3rem; text-align: left; }
+        .problem-card { display: flex; gap: 20px; padding: 2.5rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 16px; align-items: flex-start; }
+        .icon-x { color: #ff4444; font-weight: 900; font-size: 1.4rem; margin-top: 2px; }
+
+        /* PRICING FLOOR */
+        .floor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; margin-top: 4rem; }
+        .price-card { padding: 4rem 3rem; border: 1px solid var(--border); border-radius: 32px; background: var(--surface); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .price-card.featured { border-color: var(--emerald); border-width: 2px; box-shadow: 0 0 50px rgba(16, 185, 129, 0.1); }
+        .price-card.featured::after { content: 'FULL ACCESS'; position: absolute; top: 20px; right: -35px; background: var(--emerald); color: #000; font-size: 0.65rem; font-weight: 900; padding: 8px 45px; transform: rotate(45deg); letter-spacing: 1px; }
+        
+        .price { font-family: 'Bebas Neue'; font-size: 6rem; line-height: 1; margin: 1.5rem 0; }
+        .feature-list { list-style: none; margin: 2rem 0; flex-grow: 1; }
+        .feature-list li { margin-bottom: 18px; display: flex; gap: 12px; color: var(--muted); font-size: 0.95rem; }
+        .feature-list li::before { content: '⚡'; color: var(--emerald); }
+
+        /* MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .modal-content { background: var(--surface); border: 1px solid var(--border); padding: 4rem 3rem; border-radius: 32px; max-width: 480px; width: 95%; text-align: center; }
+        input { width: 100%; padding: 1.4rem; background: #000; border: 1px solid var(--border); border-radius: 12px; color: #fff; margin: 2rem 0; outline: none; font-size: 1.1rem; }
+        input:focus { border-color: var(--emerald); }
+
+        footer { text-align: center; padding: 8rem 2rem; border-top: 1px solid var(--border); }
+        .footer-logo { font-family: 'Bebas Neue'; font-size: 2rem; letter-spacing: 4px; margin-bottom: 1.5rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            h1 { font-size: 5rem; }
+            .price { font-size: 4.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <div class="logo-box">I</div>
+            <div style="font-family: 'Bebas Neue'; font-size: 1.4rem; letter-spacing: 2px;">INVISIBLE FACTORY</div>
+        </div>
+        <div class="nav-links">
+            <a href="#problem">The Tax</a>
+            <a href="#machine">The Machine</a>
+            <a href="#floor">The Floor</a>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <a href="https://llclick.com/zt5mmbwd/" target="_blank" class="btn-simi" style="padding: 0.6rem 1.4rem; font-size: 0.75rem; border-radius: 8px; box-shadow: 0 3px 0 #bbb;">Get Keys</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-badge">INFRASTRUCTURE OVER CONTENT</div>
+        <h1>STOP CHASING.<br>START BUILDING.</h1>
+        <p>Manufacture digital assets that get discovered by search intent — not algorithm luck.</p>
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <a href="#" onclick="openModal()" class="btn-simi">Start Free Pass</a>
+            <a href="https://llclick.com/zt5mmbwd/" target="_blank" class="btn-simi outline">Unlock Factory — $10</a>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION (RED GLASS) -->
+    <section class="container" id="problem">
+        <div class="red-glass" style="padding: 5rem 4rem;">
+            <div style="color: #ff4444; font-family: 'JetBrains Mono'; font-size: 0.8rem; letter-spacing: 4px; margin-bottom: 1.5rem; font-weight: 900;">THE GURU TAX</div>
+            <h2 class="section-title" style="text-align: left; margin-bottom: 1.5rem;">Most people are paying the <span style="opacity: 0.4;">wrong tax</span></h2>
+            <p style="font-size: 1.4rem; color: var(--muted); margin-bottom: 4rem; max-width: 800px;">They rent their income from algorithms and hope for virality instead of building machines that work while they sleep.</p>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <span class="icon-x">✕</span>
+                    <div>
+                        <strong style="display: block; color: #fff; margin-bottom: 5px; font-size: 1.1rem;">Renting Your Attention</strong>
+                        <p style="color: var(--muted);">Spending 6 hours generating social content that dies in 24 hours.</p>
+                    </div>
+                </div>
+                <div class="problem-card">
+                    <span class="icon-x">✕</span>
+                    <div>
+                        <strong style="display: block; color: #fff; margin-bottom: 5px; font-size: 1.1rem;">Chasing Trends</strong>
+                        <p style="color: var(--muted);">Following viral "hacks" instead of owning the places where people search for solutions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS SECTION -->
+    <section class="container" id="machine" style="text-align: center;">
+        <h2 class="section-title">Build it. Rank it. Forget it.</h2>
+        <div class="floor-grid">
+            <div class="price-card" style="padding: 3rem;">
+                <div style="font-family: 'JetBrains Mono'; color: var(--emerald); font-size: 1.5rem; margin-bottom: 1.5rem;">01</div>
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">Audit Demand</h3>
+                <p style="color: var(--muted);">Use AI to discover high-volume search intent before writing a single line of code.</p>
+            </div>
+            <div class="price-card" style="padding: 3rem;">
+                <div style="font-family: 'JetBrains Mono'; color: var(--emerald); font-size: 1.5rem; margin-bottom: 1.5rem;">02</div>
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">Assemble Assets</h3>
+                <p style="color: var(--muted);">Deploy "3-Page Products" using AI logic to create infrastructure that converts discovery into sales.</p>
+            </div>
+            <div class="price-card" style="padding: 3rem;">
+                <div style="font-family: 'JetBrains Mono'; color: var(--emerald); font-size: 1.5rem; margin-bottom: 1.5rem;">03</div>
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">Pipe Into Search</h3>
+                <p style="color: var(--muted);">Optimize for Pinterest, Google, and Niche Directories. Get organic traffic forever.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section class="container" id="floor">
+        <div class="section-title" style="text-align: center;">The Factory Floor</div>
+        <div class="floor-grid">
+            <!-- FREE -->
+            <div class="price-card">
+                <div style="font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--muted); letter-spacing: 3px;">GAME FREE PASS</div>
+                <div class="price">$0</div>
+                <ul class="feature-list">
+                    <li>The "14-Day Blitz" Manual</li>
+                    <li>Search Intent Blueprint</li>
+                    <li>Basic Demand Audit Templates</li>
+                    <li>Community Forum Access</li>
+                </ul>
+                <a href="#" onclick="openModal()" class="btn-simi outline" style="justify-content: center; width: 100%;">Join Free Pass</a>
+            </div>
+
+            <!-- PAID -->
+            <div class="price-card featured">
+                <div style="font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--emerald); letter-spacing: 3px;">BUILDER'S PASS</div>
+                <div class="price">$10<span style="font-size: 1.2rem; color: var(--muted);">/mo</span></div>
+                <ul class="feature-list">
+                    <li>Full Access to Invisible Factory</li>
+                    <li>Raw Workflow Vault (n8n & AI)</li>
+                    <li>The 3-Page Product Framework</li>
+                    <li>Signal Feed: Private Loopholes</li>
+                    <li>Monthly Live Assembly Sessions</li>
+                </ul>
+                <a href="https://llclick.com/zt5mmbwd/" target="_blank" class="btn-simi" style="justify-content: center; width: 100%;">Get The Keys</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" style="text-align: center; padding-top: 0;">
+        <h2 style="font-family: 'Bebas Neue'; font-size: 3rem; margin-bottom: 2rem;">Ready to escape the hamster wheel?</h2>
+        <a href="https://llclick.com/zt5mmbwd/" target="_blank" class="btn-simi" style="padding: 1.5rem 4rem; font-size: 1.2rem;">Become a Builder • $10</a>
+    </section>
+
+    <footer>
+        <div class="footer-logo">INVISIBLE FACTORY</div>
+        <p style="color: var(--muted); letter-spacing: 1px;">© 2026 FGG LABS • INDUSTRIAL LOGIC • NO GURU TAX</p>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="freeModal">
+        <div class="modal-content">
+            <h2 style="font-family: 'Bebas Neue'; font-size: 3rem; color: var(--emerald); line-height: 1;">Access Granted</h2>
+            <p style="color: var(--muted); margin-top: 10px;">Enter your email to receive the 14-Day Blitz Manual.</p>
+            <input type="email" placeholder="you@email.com" id="emailInput">
+            <button onclick="submitFree()" class="btn-simi" style="width: 100%; justify-content: center;">Send My Manual</button>
+            <button onclick="closeModal()" style="background: none; border: none; color: var(--muted); margin-top: 2rem; cursor: pointer; text-decoration: underline; font-size: 0.8rem;">Nevermind</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('freeModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('freeModal').style.display = 'none';
+        }
+        function submitFree() {
+            const email = document.getElementById('emailInput').value;
+            if(email) {
+                alert("🎉 Check your email for the 14-Day Blitz Manual!");
+                closeModal();
+            } else {
+                alert("Please enter a valid email.");
+            }
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('freeModal');
+            if (event.target == modal) { closeModal(); }
+        }
+    </script>
+</body>
+</html>
